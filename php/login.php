@@ -10,6 +10,7 @@
           if(mysqli_num_rows($sql) > 0) { // if users credentials match
                $row = mysqli_fetch_assoc($sql);
                $_SESSION['unique_id'] = $row['unique_id'];
+               echo "success";
           } else {
                echo "Email or Password is incorrect";
           }

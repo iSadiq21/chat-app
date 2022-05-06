@@ -19,7 +19,7 @@ searchBar.onkeyup = () => {
     let xhr = new XMLHttpRequest(); //creating XML object 
     xhr.open("POST", "php/search.php", true);
     xhr.onload = () => {
-        if(xhr.readyState === XMLHttpRequest.DONE) {
+        if(xhr.readyState === XMLHttpRequest.DONE){
             if(xhr.status === 200) {
                 let data = xhr.response;
                 usersList.innerHTML = data;
@@ -32,7 +32,7 @@ searchBar.onkeyup = () => {
 
 setInterval(() => {
     let xhr = new XMLHttpRequest(); //creating XML object 
-    xhr.open("GET", "php/users .php", true);
+    xhr.open("GET", "php/users.php", true);
     xhr.onload = () => {
         if(xhr.readyState === XMLHttpRequest.DONE) {
             if(xhr.status === 200) {
