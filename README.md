@@ -11,3 +11,4 @@ other type of app. for example,
 it can be converted to twitter by allowing users
 to be able to post texts, images and 
 voice notes. 
+# chat-app
