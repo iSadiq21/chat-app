@@ -1,47 +1,29 @@
-const form = document.querySelector(".typing-area");
-// const inputField = form.querySelector(".input-field");
-const sendBtn = form.querySelector("button");
+const sendBtn = document.getElementsByTagName("button");
 const chatBox = document.querySelector(".chat-box");
 
-const outgoing = document.getElementById("outgoing_id").value;
-const incoming = document.getElementById("incoming_id").value;
-const message = document.getElementById("txmessage");
+function sendMessage(event) {
+    // form values
+    var outgoing_id = event.outgoing_id.value;
+    var incoming_id = event.incoming_id.value;
+    var message = event.message.value;
 
-message.addEventListener('change',(e)=>{
-    console.log(e.target.value)
-})
+    var xhr = new XMLHttpRequest();
 
-console.log("message");
-console.log(message);
-console.log(typeof message);
+    var url = '../php/insert-chat.php';
+    var params = 'outgoing_id=' + outgoing_id + '&incoming_id=' + incoming_id + '&message=' + message;
+    xhr.open('POST', url, true);
 
-sendBtn.onclick = (e) => {
-    // e.preventDefault();
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    console.log('CHATTING');
-    
-    let xhr = new XMLHttpRequest(); //creating XML object 
-    xhr.open("POST", "../php/insert-chat.php", true);
-
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    console.log(message);
-    xhr.send("incoming_id=" + incoming + "&outgoing_id=" + outgoing + "&message=" + message); // sending data to php
-
-    xhr.onload = () => {
-        if(xhr.readyState === XMLHttpRequest.DONE) {
-            if(xhr.status === 200) {
-                console.log('RESPONSE FROM INSERTING');
-            //    inputField.value = ""; // once message is inserted into db then leave input field blank
-               scrollToBottom();
-            }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById("chat-form").reset();
+            console.log(xhr.responseText);
         }
     }
 
-
-    // console.log(form)
-    // let formData = new FormData(form); // creating new formData object
-    // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    // xhr.send(formData); // sending data to php
+    // Send params with request
+    xhr.send(params);
 }
 
 chatBox.onmouseenter = () => {
@@ -50,23 +32,32 @@ chatBox.onmouseenter = () => {
 chatBox.onmouseleave = () => {
     chatBox.classList.remove("active");
 }
-// setInterval(() => {
-//     let xhr = new XMLHttpRequest(); //creating XML object 
-//     xhr.open("POST", "../php/get-chat.php", true);
-//     xhr.onload = () => {
-//         if(xhr.readyState === XMLHttpRequest.DONE) {
-//             if(xhr.status === 200) {
-//                 let data = xhr.response;
-//                 chatBox.innerHTML = data;
-//                 if(!chatBox.classList.contains("active")){ //if active class not contains in chatbox the scroll to bottom
-//                     scrollToBottom();
-//                 }
-//             }
-//         }
-//     }
-//     let formData = new FormData(form); // creating new formData object
-//     xhr.send(formData); // sending data to php
-// }, 50000); // this function runs after 500ms
+
+const form = document.querySelector(".typing-area");
+const outgoing_id = document.getElementById("outgoing_id")?.value;
+const incoming_id = document.getElementById("incoming_id")?.value;
+
+setInterval(() => {
+    let xhr = new XMLHttpRequest(); //creating XML object
+
+    var getUrl = '../php/get-chat.php';
+
+    xhr.open("POST", getUrl, true);
+    var params2 = 'outgoing_id=' + outgoing_id + '&incoming_id=' + incoming_id;
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            let data = xhr.response;
+            chatBox.innerHTML = data;
+            if(!chatBox.classList.contains("active")){ //if active class not contains in chatbox the scroll to bottom
+                scrollToBottom();
+            }
+        }
+    }
+
+    xhr.send(params2); // sending data to php
+}, 500); // this function runs after 500ms
 
 function scrollToBottom(){
     chatBox.scrollTop = chatBox.scrollHeight;

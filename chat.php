@@ -32,11 +32,11 @@
                 
                 </div>
                 
-                <form action="#" name="chatting" class="typing-area" autocomplete="off">
+                <form action="javascript:void(0);" onsubmit="sendMessage(this)" name="chatting" id="chat-form" class="typing-area" autocomplete="off">
                     <input type="text" name="outgoing_id" id="outgoing_id" value="<?php echo $_SESSION['unique_id']; ?>" hidden> 
                     <input type="text" name="incoming_id" id="incoming_id" value="<?php echo $user_id; ?>" hidden>
-                    <input type="text" name="message" id="txmessage" class="input-field" placeholder="Type a message here...">
-                    <button><i class="fab fa-telegram-plane"></i></button>
+                    <input type="text" name="message" id="message" class="input-field" placeholder="Type a message here...">
+                    <button type="submit"><i class="fab fa-telegram-plane"></i></button>
                 </form>
             </section>
         </div> 
